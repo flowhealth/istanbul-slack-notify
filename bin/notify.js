@@ -40,16 +40,12 @@ if (packageJson.coverage) {
 
 const reports = new IstanbulReport(settings.istanbul);
 
-
 const handleResults = () => {
     let coverage = reports.processSummary();
-    let build = CommitInfo.git();
     return new Promise((resolve, reject) => {
-        return Promise.all([coverage, build])
+        return Promise.all([coverage])
             .then(values => {
                 settings.project.coverage = values[0];
-                settings.project.build = values[1];
-
                 if (settings.useTextNotify) {
                     const textNotify = new TextNotify();
                     textNotify.printCoverage(settings.project);
