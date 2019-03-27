@@ -16,11 +16,11 @@ class SlackNotify {
 
     buildCoveragePayload(data) {
         return new Promise((resolve, reject) => {
-            if (!data || !data.coverage || !data.build) {
+            if (!data || !data.coverage) {
                 reject(new Error("Coverage and/or build data was not provided"))
             }
             let threshold = data.coverage.success ? this.settings.result.pass : this.settings.result.fail;
-            let commitRef = data.build.refs.length === 1 ? data.build.refs[0] : data.build.refs[1];
+
             const payload = {
                 username: this.settings.username,
                 channel: this.settings.channel,
@@ -31,8 +31,7 @@ class SlackNotify {
                         fallback: `${data.projectName} - coverage check ${threshold.text} at ${data.coverage.project}%`,
                         mrkdwn_in: ['text', 'title'],
                         title: `${data.projectName} - coverage check ${threshold.text}`,
-                        title_link: `${data.repositoryUrl}/commits/${data.build.revision}`,
-                        footer: `${data.build.date} - ${data.build.author} commited ${data.build.shortRevision} ${commitRef}`,
+                        title_link: `${data.repositoryUrl}/commits`,
                         fields: [
                             {
                                 title: "Total Coverage",
