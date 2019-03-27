@@ -40,6 +40,7 @@ if (packageJson.coverage) {
 
 const reports = new IstanbulReport(settings.istanbul);
 
+
 const handleResults = () => {
     let coverage = reports.processSummary();
     let build = CommitInfo.git();
