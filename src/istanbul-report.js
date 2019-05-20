@@ -9,6 +9,7 @@ class IstanbulReport {
         this.settings.rootDir = this.settings.rootDir || "./";
         this.settings.coverageFiles = this.settings.coverageFiles || ["coverage/coverage-final.json"];
         this.settings.summaryFile = this.settings.summaryFile || "coverage/coverage-summary.json";
+        this.jestResults = "jest-results.json";
         this.sanitizeThreshold(this.settings.threshold);
         if (this.settings.coverageFiles.length === 0) {
             throw new Error("Require at least one coverage istanbul file (settings.coverageFiles)");
@@ -49,17 +50,42 @@ class IstanbulReport {
                 if (err) {
                     reject(new Error(`Error processing file: ${this.settings.summaryFile}`));
                 }
-                resolve(data);
+
+                fs.readFile(this.jestResults, 'utf-8', (err, jestResults) => {
+                    if (err) {
+                        reject(new Error(`Error processing file: ${this.jestResults}`));
+                    }
+
+                    resolve({data, jestResults});
+                })
             })
         });
         return readFile
-            .then((json) => {
-                let summary = JSON.parse(json);
+            .then(({data, jestResults}) => {
+                const jestResultsParsed = JSON.parse(jestResults);
+                let summary = JSON.parse(data);
                 let coverage = {
                     statements: summary.total.statements.pct,
                     branches: summary.total.branches.pct,
                     lines: summary.total.lines.pct,
-                    functions: summary.total.functions.pct
+                    functions: summary.total.functions.pct,
+                    testsFailed: jestResultsParsed.testResults.reduce((memo, curr) => {
+                        if (curr.numFailingTests > 0) {
+                            const result = {
+                                path: curr.testFilePath.substring(curr.testFilePath.indexOf('/mp-webapp')),
+                            };
+                            if (curr.testResults.length > 0) {
+                                curr.testResults.forEach(item => {
+                                    if (item.status === 'failed') {
+                                        result.messages = (result.messages || []).concat(item.fullName);
+                                    }
+                                });
+                            }
+                            return memo.concat(result);
+                        }
+
+                        return memo
+                    }, [])
                 };
                 coverage.project = (coverage.branches + coverage.statements + coverage.lines + coverage.functions) / 4;
                 coverage.project = parseFloat(coverage.project.toFixed(2));

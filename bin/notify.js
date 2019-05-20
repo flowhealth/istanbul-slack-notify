@@ -49,13 +49,23 @@ const handleResults = () => {
                 if (settings.useTextNotify) {
                     const textNotify = new TextNotify();
                     textNotify.printCoverage(settings.project);
-                    resolve(settings);
+
+                    if (settings.project.coverage.testsFailed.length > 0) {
+                        reject(new Error("Tests failed"));
+                    } else {
+                        resolve(settings);
+                    }
                 } else {
                     const slack = new SlackNotify(settings.slack);
                     slack.buildCoveragePayload(settings.project)
                         .then(data => {
-                            slack.sendNotification(data);
-                            resolve(settings);
+                            slack.sendNotification(data, () => {
+                                if (settings.project.coverage.testsFailed.length > 0) {
+                                    reject(new Error("Tests failed"));
+                                } else {
+                                    resolve(settings);
+                                }
+                            });
                         });
                 }
             })
