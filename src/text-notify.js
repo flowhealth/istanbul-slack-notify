@@ -16,7 +16,11 @@ class TextNotify {
         if (!data || !data.coverage) {
             throw new Error("coverage information missing");
         }
-        if (data.coverage.success) {
+
+        if (data.coverage.testsFailed.length > 0) {
+            console.log(`Tests Failed:\n`.red)
+            data.coverage.testsFailed.forEach(info => console.log(`${info.path}`.red));
+        } else if (data.coverage.success) {
             const emoji = TextNotify.getEmoji(this.emojis.pass);
             console.log("Total Coverage:".bold.green, `${data.coverage.project}%`.green,
                 "\tRequired Coverage:".bold.green, `${data.coverage.threshold}%`.green);
