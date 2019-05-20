@@ -13,7 +13,8 @@ const settings = {
         rootDir: process.env.PWD,
         coverageFiles: ["coverage/coverage-final.json"],
         summaryFile: "coverage/coverage-summary.json",
-        threshold: 100
+        threshold: 100,
+        testsResultsFile: "jest-results.json"
     },
     slack: {
         webhook: process.env.SLACK_WEBHOOK
@@ -29,6 +30,7 @@ const packageJson = JSON.parse(fs.readFileSync("./package.json"));
 if (packageJson.coverage) {
     settings.istanbul.coverageFiles = packageJson.coverage.coverageFiles || settings.istanbul.coverageFiles;
     settings.istanbul.threshold = packageJson.coverage.threshold || settings.istanbul.threshold;
+    settings.istanbul.testsResultsFile = packageJson.coverage.testsResultsFile || settings.istanbul.testsResultsFile;
     settings.slack.channel = packageJson.coverage.channel || settings.slack.channel;
     settings.slack.username = packageJson.coverage.username || settings.slack.username;
     settings.project.projectName = packageJson.coverage.projectName || settings.project.projectName || packageJson.name;

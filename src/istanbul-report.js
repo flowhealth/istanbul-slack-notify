@@ -9,7 +9,7 @@ class IstanbulReport {
         this.settings.rootDir = this.settings.rootDir || "./";
         this.settings.coverageFiles = this.settings.coverageFiles || ["coverage/coverage-final.json"];
         this.settings.summaryFile = this.settings.summaryFile || "coverage/coverage-summary.json";
-        this.jestResults = "jest-results.json";
+        this.jestResults = this.settings.testsResultsFile || "jest-results.json";
         this.sanitizeThreshold(this.settings.threshold);
         if (this.settings.coverageFiles.length === 0) {
             throw new Error("Require at least one coverage istanbul file (settings.coverageFiles)");
