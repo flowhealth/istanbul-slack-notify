@@ -1,4 +1,4 @@
-const IstanbulReport = require("../src/istanbul-report");
+const IstanbulReport = require("../src/unit/istanbul-report");
 
 const settings = {
     rootDir: process.env.PWD,

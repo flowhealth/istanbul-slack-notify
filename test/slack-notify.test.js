@@ -1,4 +1,4 @@
-const SlackNotify = require("../src/slack-notify");
+const SlackNotify = require("../src/unit/slack-notify");
 const {project} = require("./constants");
 
 jest.mock('slack-node');

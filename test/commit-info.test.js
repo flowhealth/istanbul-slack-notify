@@ -1,4 +1,4 @@
-const CommitInfo = require("../src/commit-info");
+const CommitInfo = require("../src/unit/commit-info");
 const {exec} = require('child_process');
 
 jest.mock('child_process');
