@@ -11,8 +11,8 @@
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "bin": {
-    "istanbul-unit-slack-notify": "bin/unit/notify.js",
-    "istanbul-integration-slack-notify": "bin/integration/notify.js"
+    "istanbul-unit-slack-notify": "./bin/unit/notify.js",
+    "istanbul-integration-slack-notify": "./bin/integration/notify.js"
   },
   "repository": {
     "type": "git",
