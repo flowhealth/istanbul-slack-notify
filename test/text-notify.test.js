@@ -1,4 +1,4 @@
-const TextNotify = require("../src/text-notify");
+const TextNotify = require("../src/unit/text-notify");
 const {project} = require("./constants");
 
 const consoleSpy = jest.spyOn(console, "log");

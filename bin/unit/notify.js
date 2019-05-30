@@ -1,9 +1,8 @@
 #!/usr/bin/env node
-const ProcessResponder = require("../src/process-responder");
-const IstanbulReport = require("../src/istanbul-report");
-const SlackNotify = require("../src/slack-notify");
-const TextNotify = require("../src/text-notify");
-const CommitInfo = require("../src/commit-info");
+const ProcessResponder = require("../../src/unit/process-responder");
+const IstanbulReport = require("../../src/unit/istanbul-report");
+const SlackNotify = require("../../src/unit/slack-notify");
+const TextNotify = require("../../src/unit/text-notify");
 const fs = require("fs");
 
 // Runs Coverage Notifier
@@ -27,16 +26,16 @@ const settings = {
 
 // Overwrite settings from package.json if defined
 const packageJson = JSON.parse(fs.readFileSync("./package.json"));
-if (packageJson.coverage) {
-    settings.istanbul.coverageFiles = packageJson.coverage.coverageFiles || settings.istanbul.coverageFiles;
-    settings.istanbul.threshold = packageJson.coverage.threshold || settings.istanbul.threshold;
-    settings.istanbul.testsResultsFile = packageJson.coverage.testsResultsFile || settings.istanbul.testsResultsFile;
-    settings.slack.channel = packageJson.coverage.channel || settings.slack.channel;
-    settings.slack.username = packageJson.coverage.username || settings.slack.username;
-    settings.project.projectName = packageJson.coverage.projectName || settings.project.projectName || packageJson.name;
-    settings.project.repositoryUrl = packageJson.coverage.repositoryUrl;
-    settings.haltOnFailure = Object.prototype.hasOwnProperty.call(packageJson.coverage, "haltOnFailure")
-        ? packageJson.coverage.haltOnFailure
+if (packageJson.coverage && packageJson.coverage.unit) {
+    settings.istanbul.coverageFiles = packageJson.coverage.unit.coverageFiles || settings.istanbul.coverageFiles;
+    settings.istanbul.threshold = packageJson.coverage.unit.threshold || settings.istanbul.threshold;
+    settings.istanbul.testsResultsFile = packageJson.coverage.unit.testsResultsFile || settings.istanbul.testsResultsFile;
+    settings.slack.channel = packageJson.coverage.unit.channel || settings.slack.channel;
+    settings.slack.username = packageJson.coverage.unit.username || settings.slack.username;
+    settings.project.projectName = packageJson.coverage.unit.projectName || settings.project.projectName || packageJson.name;
+    settings.project.repositoryUrl = packageJson.coverage.unit.repositoryUrl;
+    settings.haltOnFailure = Object.prototype.hasOwnProperty.call(packageJson.coverage.unit, "haltOnFailure")
+        ? packageJson.coverage.unit.haltOnFailure
         : settings.haltOnFailure;
 }
 

@@ -2,16 +2,17 @@
   "name": "istanbul-slack-notify",
   "version": "1.0.20",
   "description": "Sends istanbul / jest coverage summary and git build details to Slack using a pass/fail threshold for project coverage.",
-  "main": "./bin/notify.js",
+  "main": "bin/unit/notify.js",
   "scripts": {
-    "test": "npm run lint && npm run coverage && ./bin/notify.js",
-    "notify": "npm run test && ./bin/notify.js",
+    "test": "npm run lint && npm run coverage && ./bin/unit/notify.js",
+    "notify": "npm run test && ./bin/unit/notify.js",
     "lint": "./node_modules/.bin/eslint src/ test/",
     "coverage": "./node_modules/.bin/jest --coverage",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "bin": {
-    "istanbul-slack-notify": "./bin/notify.js"
+    "istanbul-unit-slack-notify": "bin/unit/notify.js",
+    "istanbul-integration-slack-notify": "bin/integration/notify.js"
   },
   "repository": {
     "type": "git",
@@ -54,10 +55,15 @@
     ]
   },
   "coverage": {
-    "coverageFiles": [
-      "coverage/coverage-final.json"
-    ],
-    "threshold": 100,
-    "repositoryUrl": "https://github.com/mattyboy/istanbul-slack-notify"
+    "unit": {
+      "coverageFiles": [
+        "coverage/coverage-final.json"
+      ],
+      "threshold": 100,
+      "repositoryUrl": "https://github.com/mattyboy/istanbul-slack-notify"
+    },
+    "integration": {
+      "repositoryUrl": "https://github.com/mattyboy/istanbul-slack-notify"
+    }
   }
 }

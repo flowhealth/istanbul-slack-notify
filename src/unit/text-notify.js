@@ -18,7 +18,7 @@ class TextNotify {
         }
 
         if (data.coverage.testsFailed.length > 0) {
-            console.log(`Tests Failed:\n`.red)
+            console.log(`Tests Failed:\n`.bold.red)
             data.coverage.testsFailed.forEach(info => console.log(`${info.path}`.red));
         } else if (data.coverage.success) {
             const emoji = TextNotify.getEmoji(this.emojis.pass);

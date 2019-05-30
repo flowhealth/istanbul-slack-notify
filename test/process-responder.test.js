@@ -1,4 +1,4 @@
-const ProcessResponder = require("../src/process-responder");
+const ProcessResponder = require("../src/unit/process-responder");
 const {project} = require("./constants");
 
 const failProject = Object.assign(project, {coverage: {success: false}});
